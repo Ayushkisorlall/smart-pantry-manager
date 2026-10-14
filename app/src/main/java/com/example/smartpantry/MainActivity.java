@@ -1,5 +1,6 @@
 package com.example.smartpantry;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -7,6 +8,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,15 +35,19 @@ public class MainActivity extends AppCompatActivity {
         adapter = new PantryAdapter(new ArrayList<>(), new PantryAdapter.Listener() {
             @Override
             public void onEdit(PantryItem item) {
-                // added on Day 3
+                // added in the next commit
             }
 
             @Override
             public void onDelete(PantryItem item) {
-                // added on Day 3
+                // added in the next commit
             }
         });
         recyclerView.setAdapter(adapter);
+
+        // The + button opens the Add Ingredient screen
+        FloatingActionButton fab = findViewById(R.id.fabAdd);
+        fab.setOnClickListener(v -> startActivity(new Intent(this, AddEditActivity.class)));
     }
 
     // Reload the list every time the screen comes back into view
