@@ -1,10 +1,14 @@
 package com.example.smartpantry;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,17 +39,19 @@ public class MainActivity extends AppCompatActivity {
         adapter = new PantryAdapter(new ArrayList<>(), new PantryAdapter.Listener() {
             @Override
             public void onEdit(PantryItem item) {
-                // added in the next commit
+                // Intent passes the item id to the edit screen
+                Intent intent = new Intent(MainActivity.this, AddEditActivity.class);
+                intent.putExtra("item_id", item.id);
+                startActivity(intent);
             }
 
             @Override
             public void onDelete(PantryItem item) {
-                // added in the next commit
+                confirmDelete(item);
             }
         });
         recyclerView.setAdapter(adapter);
 
-        // The + button opens the Add Ingredient screen
         FloatingActionButton fab = findViewById(R.id.fabAdd);
         fab.setOnClickListener(v -> startActivity(new Intent(this, AddEditActivity.class)));
     }
@@ -59,7 +65,21 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadItems() {
         List<PantryItem> items = db.getAllItems();
-        adapter.setItems(items, true);
+        SharedPreferences prefs = getSharedPreferences("pantry_settings", Context.MODE_PRIVATE);
+        adapter.setItems(items, prefs.getBoolean("expiry_alerts", true));
         textEmpty.setVisibility(items.isEmpty() ? View.VISIBLE : View.GONE);
+    }
+
+    private void confirmDelete(PantryItem item) {
+        new AlertDialog.Builder(this)
+                .setTitle("Delete ingredient")
+                .setMessage("Remove " + item.name + " from your pantry?")
+                .setPositiveButton("Delete", (dialog, which) -> {
+                    db.deleteItem(item.id);
+                    Toast.makeText(this, "Ingredient deleted", Toast.LENGTH_SHORT).show();
+                    loadItems();
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
     }
 }
