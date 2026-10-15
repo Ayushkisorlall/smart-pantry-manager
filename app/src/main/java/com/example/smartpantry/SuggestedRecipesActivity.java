@@ -18,6 +18,7 @@ public class SuggestedRecipesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_suggested);
+        ScreenUtils.fixInsets(this);
         setTitle("Suggested Recipes");
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
