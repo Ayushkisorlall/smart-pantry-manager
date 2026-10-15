@@ -24,6 +24,9 @@
         <activity
             android:name=".AddEditActivity"
             android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".SuggestedRecipesActivity"
+            android:parentActivityName=".MainActivity" />
     </application>
 
 </manifest>
