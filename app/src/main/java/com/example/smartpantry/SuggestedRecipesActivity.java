@@ -1,9 +1,9 @@
 package com.example.smartpantry;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -31,8 +31,12 @@ public class SuggestedRecipesActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recyclerRecipes);
         TextView textEmpty = findViewById(R.id.textEmptyRecipes);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new RecipeAdapter(suggested, recipe ->
-                Toast.makeText(this, recipe.name, Toast.LENGTH_SHORT).show()));
+        recyclerView.setAdapter(new RecipeAdapter(suggested, recipe -> {
+            // Intent passes the recipe id to the detail screen
+            Intent intent = new Intent(this, RecipeDetailActivity.class);
+            intent.putExtra("recipe_id", recipe.id);
+            startActivity(intent);
+        }));
 
         // Feedback when nothing matches
         textEmpty.setVisibility(suggested.isEmpty() ? View.VISIBLE : View.GONE);
