@@ -98,6 +98,9 @@ public class MainActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.action_suggested) {
             startActivity(new Intent(this, SuggestedRecipesActivity.class));
             return true;
+        } else if (item.getItemId() == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
